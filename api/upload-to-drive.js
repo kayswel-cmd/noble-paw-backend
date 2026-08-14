@@ -1,6 +1,6 @@
 // 이 파일도 Vercel 서버리스 함수예요.
-// 사장님의 구글 드라이브 특정 폴더에, 서비스 계정(로봇 계정) 권한으로
-// 초상화 이미지를 주문자 정보가 담긴 파일명으로 업로드해요.
+// 서비스 계정은 개인 Gmail 드라이브에 저장 용량이 없어서 쓸 수 없기 때문에,
+// 사장님이 한 번 OAuth로 승인해서 얻은 refresh token으로 "사장님 본인 자격"으로 업로드해요.
 
 const { google } = require('googleapis');
 const { Readable } = require('stream');
@@ -23,26 +23,21 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: '이미지(imageBase64) 또는 파일명(filename)이 없습니다.' });
     }
 
-    const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-    const rawKey = process.env.GOOGLE_PRIVATE_KEY;
+    const clientId = process.env.GOOGLE_OAUTH_CLIENT_ID;
+    const clientSecret = process.env.GOOGLE_OAUTH_CLIENT_SECRET;
+    const refreshToken = process.env.GOOGLE_OAUTH_REFRESH_TOKEN;
     const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
 
-    if (!clientEmail || !rawKey || !folderId) {
+    if (!clientId || !clientSecret || !refreshToken || !folderId) {
       return res.status(500).json({
-        error: '서버에 GOOGLE_SERVICE_ACCOUNT_EMAIL / GOOGLE_PRIVATE_KEY / GOOGLE_DRIVE_FOLDER_ID 환경변수가 설정되어 있지 않습니다.',
+        error: '서버에 GOOGLE_OAUTH_CLIENT_ID / GOOGLE_OAUTH_CLIENT_SECRET / GOOGLE_OAUTH_REFRESH_TOKEN / GOOGLE_DRIVE_FOLDER_ID 환경변수가 설정되어 있지 않습니다.',
       });
     }
 
-    // Vercel 환경변수에 줄바꿈을 그대로 못 넣는 경우가 많아서 \n 문자를 실제 줄바꿈으로 변환해줘요.
-    const privateKey = rawKey.replace(/\\n/g, '\n');
+    const oAuth2Client = new google.auth.OAuth2(clientId, clientSecret);
+    oAuth2Client.setCredentials({ refresh_token: refreshToken });
 
-    const auth = new google.auth.JWT({
-      email: clientEmail,
-      key: privateKey,
-      scopes: ['https://www.googleapis.com/auth/drive.file'],
-    });
-
-    const drive = google.drive({ version: 'v3', auth });
+    const drive = google.drive({ version: 'v3', auth: oAuth2Client });
 
     const buffer = Buffer.from(imageBase64, 'base64');
     const stream = new Readable();

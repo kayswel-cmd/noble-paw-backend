@@ -7,9 +7,10 @@ Gemini 2.5 Flash Image를 호출해서 반려동물 사진을 귀족 초상화�
 Vercel 프로젝트 설정 > Environment Variables 에 아래 값을 추가해야 해요.
 
 - `GEMINI_API_KEY` : Google AI Studio (https://aistudio.google.com/apikey) 에서 발급받은 키
-- `GOOGLE_SERVICE_ACCOUNT_EMAIL` : 구글 서비스 계정 이메일 (xxx@xxx.iam.gserviceaccount.com 형태)
-- `GOOGLE_PRIVATE_KEY` : 서비스 계정 JSON 키 파일 안의 private_key 값 (줄바꿈 포함 그대로)
-- `GOOGLE_DRIVE_FOLDER_ID` : 이미지를 저장할 구글 드라이브 폴더의 ID
+- `GOOGLE_OAUTH_CLIENT_ID` : Google Cloud OAuth 클라이언트 ID
+- `GOOGLE_OAUTH_CLIENT_SECRET` : Google Cloud OAuth 클라이언트 시크릿
+- `GOOGLE_OAUTH_REFRESH_TOKEN` : OAuth Playground 등에서 발급받은 refresh token (사장님 본인 계정으로 승인)
+- `GOOGLE_DRIVE_FOLDER_ID` : 이미지를 저장할 구글 드라이브 폴더의 ID (사장님 본인 드라이브 안의 폴더)
 
 ## 엔드포인트
 
