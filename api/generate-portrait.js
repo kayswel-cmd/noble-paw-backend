@@ -3,11 +3,7 @@
 // 실제 Gemini API 키와 프롬프트는 이 서버 안에서만 사용돼서 외부에 노출되지 않아요.
 
 // ===== 여기서 프롬프트를 미리 고정해둘 수 있어요 =====
-const FIXED_PROMPT = `이 반려동물 사진을 17세기 유럽 궁정 유화 초상화 스타일로 변환해줘.
-동물의 얼굴 생김새, 털 색, 무늬는 원본 사진과 최대한 동일하게 유지해줘.
-목에는 화려한 러프 칼라나 벨벳 소재의 귀족 의상을 입혀줘.
-배경은 짙은 버건디 또는 짙은 갈색 톤의 궁정 배경으로 그려줘.
-전체적으로 유화 붓터치가 느껴지는 고전 회화 질감으로, 사진이 아니라 그림처럼 보이게 해줘.`;
+const FIXED_PROMPT = `A vertical master oil painting in the style of 17th-century European baroque noble portraiture, depicting the specific animal seen in the attached photo as a grand nobleman/noblewoman. The pet retains its exact facial features, markings, and expression from the attached photo, dressed in royal velvet and silk attire with ornate gold embroidery, jewel-encrusted collar, and pearls. The portrait is enclosed directly within a luxurious, ornate medieval baroque gilded gold picture frame with intricate filigree, baroque scrollwork, and deep relief carvings. The gold frame forms the exact border of the canvas with no wall or external background visible outside the frame. Rich oil texture, chiaroscuro lighting, deep chiaroscuro contrast, ultra-high resolution, extremely detailed, masterpiece.`;
 
 module.exports = async function handler(req, res) {
   // CORS 허용 (프론트엔드가 다른 주소에서 이 서버를 호출할 수 있게)
@@ -55,6 +51,13 @@ module.exports = async function handler(req, res) {
               ],
             },
           ],
+          generationConfig: {
+            responseModalities: ['IMAGE'],
+            imageConfig: {
+              // Gemini가 지원하는 비율 중 세로형 A4에 가장 가까운 3:4로 설정
+              aspectRatio: '3:4',
+            },
+          },
         }),
       }
     );
