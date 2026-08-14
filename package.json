@@ -2,5 +2,8 @@
   "name": "noble-paw-backend",
   "version": "1.0.0",
   "private": true,
-  "description": "노블 앤 포 - Gemini 이미지 변환 백엔드"
+  "description": "노블 앤 포 - Gemini 이미지 변환 + 구글 드라이브 업로드 백엔드",
+  "dependencies": {
+    "googleapis": "^140.0.1"
+  }
 }
