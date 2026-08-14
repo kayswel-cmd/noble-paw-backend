@@ -1,0 +1,6 @@
+{
+  "name": "noble-paw-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "노블 앤 포 - Gemini 이미지 변환 백엔드"
+}
