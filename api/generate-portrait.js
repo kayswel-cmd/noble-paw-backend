@@ -8,24 +8,7 @@ const PROMPTS = {
 
   y2k: `Transform the pet shown in the provided input image into a charismatic, hip K-pop artist album cover from the early 2000s Y2K millennium era. Keep the pet's facial structure, fur pattern, color, and unique features completely identical to the input image. Dress the pet in iconic millennium fashion: a shiny metallic puffer vest, chunky silver chain necklace, wrap-around tinted visor sunglasses worn on the head, and retro oversized headphones. Set the background to a late-90s/early-2000s cyber aesthetic with futuristic chrome textures, holographic lens flares, subtle wireframe grids, and retro CD-ROM jewel case vibes. Use direct flash photography lighting with a slight fish-eye lens perspective. Render the final output in a vertical 3:4 aspect ratio with ultra-high resolution and 300 DPI print-ready clarity. Do not generate text or frames.`,
 
-  baby: `Core Objective: Place the baby's face, taken exactly as depicted in the provided input photo, at the absolute center of a smartphone screen background. Make the baby's body and face look as if they are forcefully pressed against the glass surface from inside the screen, trying to peek out.
-Character & Expression (Crucial): Maintain the identical facial features, identity, and unique characteristics of the baby in the input photo. Do not generate a generic baby. Ensure the expression is engaging, looking directly out from inside the screen.
-Compression & Deformity (The Key):
-
-* Cheeks: Emphasize exceptionally chubby, soft, and squishy cheeks. They must appear profoundly pressed and flattened against the glass, creating a comical 'squished face' (or 'jjiboo' in Korean) effect. The skin around the compression area should appear soft and flattened, spreading slightly.
-* Hands: Crucially, depict chubby baby palms and fingers flattened against the glass surface. Each palm must show distinct pressure points, with the skin spreading and appearing slightly flushed/redder from the direct contact. All five fingers must be rendered correctly, appearing plump but compressed, without any count errors.
-* Nose & Lips: The tip of the nose and the lips should also appear slightly flattened and pressed against the glass.
-
-Overall Aesthetic:
-
-* Style: A soft, semi-realistic style, blending photorealism with the charming aesthetic of high-quality digital illustration. It should be endearing, playful, and avoid any harsh or unnatural artificial generation artifacts.
-* Skin: Render the skin as soft, smooth, and fair, with a healthy, glowing complexion. The eyes must remain very distinct, large, round, and sparkling with clear catchlights, maintaining the likeness to the source photo.
-
-Composition & Constraints:
-
-* Framing: The composition must be a strict close-up portrait centered within the borders of a modern smartphone bezel, which frames the image.
-* Compression Detail: Ensure all areas pressed against the glass are rendered with convincing compression texture and subtle flattening.
-* Constraints: No generated text, logos, overlays, or borders on the screen. No finger count errors. The baby's face must be central.`,
+  baby: `Close-up first-person view of the baby from the input photo pressing their face and hands firmly against the transparent glass surface directly in front of the camera, completely filling the entire screen frame edge-to-edge. Maintain the baby's exact facial features, eye shape, and identity from the input image. The baby's soft, chubby cheeks are comically squished and flattened against the glass, spreading softly with a slight natural flush where pressed. Both chubby baby palms and all ten plump fingers are pressed flat against the glass surface, showing realistic pressure points with accurate anatomy and exactly five fingers on each hand. The tip of the nose and lips are gently squished against the glass. Style: a warm, natural blend of photorealism and soft 3D digital illustration without artificial AI artifacts. Bright, smooth, fair skin, round sparkling eyes looking directly forward. The image must fill the entire canvas with no smartphone borders, no bezels, no device frames, and no text.`,
 };
 
 const ASPECT_RATIOS = {
