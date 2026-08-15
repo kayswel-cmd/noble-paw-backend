@@ -2,8 +2,12 @@
 // 브라우저(프론트엔드)는 이 주소(/api/generate-portrait)로만 사진을 보내고,
 // 실제 Gemini API 키와 프롬프트는 이 서버 안에서만 사용돼서 외부에 노출되지 않아요.
 
-// ===== 여기서 프롬프트를 미리 고정해둘 수 있어요 =====
-const FIXED_PROMPT = `A vertical master oil painting in the style of 17th-century European baroque noble portraiture, depicting the specific animal seen in the attached photo as a grand nobleman/noblewoman. The pet retains its exact facial features, markings, and expression from the attached photo, dressed in royal velvet and silk attire with ornate gold embroidery, jewel-encrusted collar, and pearls. The portrait is enclosed directly within a luxurious, ornate medieval baroque gilded gold picture frame with intricate filigree, baroque scrollwork, and deep relief carvings. The gold frame forms the exact border of the canvas with no wall or external background visible outside the frame. Rich oil texture, chiaroscuro lighting, deep chiaroscuro contrast, ultra-high resolution, extremely detailed, masterpiece.`;
+// ===== 여기서 컨셉별 프롬프트를 미리 고정해둘 수 있어요 =====
+const PROMPTS = {
+  baroque: `A vertical master oil painting in the style of 17th-century European baroque noble portraiture, depicting the specific animal seen in the attached photo as a grand nobleman/noblewoman. The pet retains its exact facial features, markings, and expression from the attached photo, dressed in royal velvet and silk attire with ornate gold embroidery, jewel-encrusted collar, and pearls. The portrait is enclosed directly within a luxurious, ornate medieval baroque gilded gold picture frame with intricate filigree, baroque scrollwork, and deep relief carvings. The gold frame forms the exact border of the canvas with no wall or external background visible outside the frame. Rich oil texture, chiaroscuro lighting, deep chiaroscuro contrast, ultra-high resolution, extremely detailed, masterpiece.`,
+
+  y2k: `Transform the pet shown in the provided input image into a charismatic, hip K-pop artist album cover from the early 2000s Y2K millennium era. Keep the pet's facial structure, fur pattern, color, and unique features completely identical to the input image. Dress the pet in iconic millennium fashion: a shiny metallic puffer vest, chunky silver chain necklace, wrap-around tinted visor sunglasses worn on the head, and retro oversized headphones. Set the background to a late-90s/early-2000s cyber aesthetic with futuristic chrome textures, holographic lens flares, subtle wireframe grids, and retro CD-ROM jewel case vibes. Use direct flash photography lighting with a slight fish-eye lens perspective. Render the final output in a vertical 3:4 aspect ratio with ultra-high resolution and 300 DPI print-ready clarity. Do not generate text or frames.`,
+};
 
 module.exports = async function handler(req, res) {
   // CORS 허용 (프론트엔드가 다른 주소에서 이 서버를 호출할 수 있게)
@@ -19,10 +23,12 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { imageBase64, mimeType } = req.body || {};
+    const { imageBase64, mimeType, concept } = req.body || {};
     if (!imageBase64) {
       return res.status(400).json({ error: '이미지 데이터(imageBase64)가 없습니다.' });
     }
+
+    const selectedPrompt = PROMPTS[concept] || PROMPTS.y2k;
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
@@ -41,7 +47,7 @@ module.exports = async function handler(req, res) {
           contents: [
             {
               parts: [
-                { text: FIXED_PROMPT },
+                { text: selectedPrompt },
                 {
                   inline_data: {
                     mime_type: mimeType || 'image/jpeg',
@@ -54,7 +60,7 @@ module.exports = async function handler(req, res) {
           generationConfig: {
             responseModalities: ['IMAGE'],
             imageConfig: {
-              // Gemini가 지원하는 비율 중 세로형 A4에 가장 가까운 3:4로 설정
+              // Gemini가 지원하는 비율 중 세로형에 가장 가까운 3:4로 설정
               aspectRatio: '3:4',
             },
           },
