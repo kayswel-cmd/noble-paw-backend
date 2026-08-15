@@ -7,6 +7,31 @@ const PROMPTS = {
   baroque: `A vertical master oil painting in the style of 17th-century European baroque noble portraiture, depicting the specific animal seen in the attached photo as a grand nobleman/noblewoman. The pet retains its exact facial features, markings, and expression from the attached photo, dressed in royal velvet and silk attire with ornate gold embroidery, jewel-encrusted collar, and pearls. The portrait is enclosed directly within a luxurious, ornate medieval baroque gilded gold picture frame with intricate filigree, baroque scrollwork, and deep relief carvings. The gold frame forms the exact border of the canvas with no wall or external background visible outside the frame. Rich oil texture, chiaroscuro lighting, deep chiaroscuro contrast, ultra-high resolution, extremely detailed, masterpiece.`,
 
   y2k: `Transform the pet shown in the provided input image into a charismatic, hip K-pop artist album cover from the early 2000s Y2K millennium era. Keep the pet's facial structure, fur pattern, color, and unique features completely identical to the input image. Dress the pet in iconic millennium fashion: a shiny metallic puffer vest, chunky silver chain necklace, wrap-around tinted visor sunglasses worn on the head, and retro oversized headphones. Set the background to a late-90s/early-2000s cyber aesthetic with futuristic chrome textures, holographic lens flares, subtle wireframe grids, and retro CD-ROM jewel case vibes. Use direct flash photography lighting with a slight fish-eye lens perspective. Render the final output in a vertical 3:4 aspect ratio with ultra-high resolution and 300 DPI print-ready clarity. Do not generate text or frames.`,
+
+  baby: `Core Objective: Place the baby's face, taken exactly as depicted in the provided input photo, at the absolute center of a smartphone screen background. Make the baby's body and face look as if they are forcefully pressed against the glass surface from inside the screen, trying to peek out.
+Character & Expression (Crucial): Maintain the identical facial features, identity, and unique characteristics of the baby in the input photo. Do not generate a generic baby. Ensure the expression is engaging, looking directly out from inside the screen.
+Compression & Deformity (The Key):
+
+* Cheeks: Emphasize exceptionally chubby, soft, and squishy cheeks. They must appear profoundly pressed and flattened against the glass, creating a comical 'squished face' (or 'jjiboo' in Korean) effect. The skin around the compression area should appear soft and flattened, spreading slightly.
+* Hands: Crucially, depict chubby baby palms and fingers flattened against the glass surface. Each palm must show distinct pressure points, with the skin spreading and appearing slightly flushed/redder from the direct contact. All five fingers must be rendered correctly, appearing plump but compressed, without any count errors.
+* Nose & Lips: The tip of the nose and the lips should also appear slightly flattened and pressed against the glass.
+
+Overall Aesthetic:
+
+* Style: A soft, semi-realistic style, blending photorealism with the charming aesthetic of high-quality digital illustration. It should be endearing, playful, and avoid any harsh or unnatural artificial generation artifacts.
+* Skin: Render the skin as soft, smooth, and fair, with a healthy, glowing complexion. The eyes must remain very distinct, large, round, and sparkling with clear catchlights, maintaining the likeness to the source photo.
+
+Composition & Constraints:
+
+* Framing: The composition must be a strict close-up portrait centered within the borders of a modern smartphone bezel, which frames the image.
+* Compression Detail: Ensure all areas pressed against the glass are rendered with convincing compression texture and subtle flattening.
+* Constraints: No generated text, logos, overlays, or borders on the screen. No finger count errors. The baby's face must be central.`,
+};
+
+const ASPECT_RATIOS = {
+  baroque: '3:4',
+  y2k: '3:4',
+  baby: '9:16',
 };
 
 module.exports = async function handler(req, res) {
@@ -29,6 +54,7 @@ module.exports = async function handler(req, res) {
     }
 
     const selectedPrompt = PROMPTS[concept] || PROMPTS.y2k;
+    const selectedRatio = ASPECT_RATIOS[concept] || '3:4';
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
@@ -60,8 +86,8 @@ module.exports = async function handler(req, res) {
           generationConfig: {
             responseModalities: ['IMAGE'],
             imageConfig: {
-              // Gemini가 지원하는 비율 중 세로형에 가장 가까운 3:4로 설정
-              aspectRatio: '3:4',
+              // 컨셉별로 다른 화면비 사용 (반려동물: 3:4, 아기 폰스크린: 9:16)
+              aspectRatio: selectedRatio,
             },
           },
         }),

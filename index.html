@@ -144,6 +144,15 @@
     height: 96px;
     background: linear-gradient(100deg, var(--c1), var(--c3) 50%, var(--c2));
   }
+  .category-swatch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .category-swatch svg {
+    width: 40px; height: 40px;
+    color: rgba(10,10,31,0.65);
+  }
   .concept-body { padding: 20px; }
   .concept-title {
     font-family: 'Black Han Sans', 'Space Grotesk', sans-serif;
@@ -248,7 +257,7 @@
     width: 100%;
     max-width: 380px;
     margin: 0 auto;
-    aspect-ratio: 3 / 4;
+    aspect-ratio: var(--stage-ratio, 3 / 4);
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 12px 40px rgba(0,0,0,0.5);
@@ -414,8 +423,39 @@
 
 <main>
 
-  <!-- 0. 콘셉트 선택 화면 -->
-  <section class="screen active" id="screen-concept">
+  <!-- -1. 카테고리 선택 화면 -->
+  <section class="screen active" id="screen-category">
+    <div class="hero">
+      <span class="label" style="background:none;-webkit-text-fill-color:initial;color:var(--muted);">Get Started</span>
+      <h1 style="background:none;-webkit-text-fill-color:initial;color:var(--text);">누구의 사진인가요?</h1>
+      <p>사진 속 대상에 맞는 스타일을 골라주세요.</p>
+    </div>
+
+    <div class="concept-grid">
+      <button class="concept-card" onclick="showScreen('screen-concept')" style="--c1:#4ce0ff; --c2:#ff5fc4; --c3:#b78bff;">
+        <div class="concept-swatch category-swatch">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.5 11.5c1.1 0 2-1.12 2-2.5S5.6 6.5 4.5 6.5s-2 1.12-2 2.5 .9 2.5 2 2.5Zm4.5-4c1.1 0 2-1.12 2-2.5S10.1 2.5 9 2.5 7 3.62 7 5s.9 2.5 2 2.5Zm6 0c1.1 0 2-1.12 2-2.5S16.6 2.5 15.5 2.5 13.5 3.62 13.5 5s.9 2.5 2 2.5Zm4.5 4c1.1 0 2-1.12 2-2.5S20.6 6.5 19.5 6.5s-2 1.12-2 2.5 .9 2.5 2 2.5ZM12 10c-2.9 0-6 2.3-6 5.5 0 1.7 1.2 2.8 2.7 2.8.9 0 1.6-.4 2.3-.8.6-.4 1.1-.7 1.7-.7s1.1.3 1.7.7c.7.4 1.4.8 2.3.8 1.5 0 2.7-1.1 2.7-2.8 0-3.2-3.1-5.5-6-5.5Z"/></svg>
+        </div>
+        <div class="concept-body">
+          <div class="concept-title">반려동물 사진</div>
+          <div class="concept-desc">강아지, 고양이 등 반려동물 사진으로 예술적인 이미지를 만들어요.</div>
+        </div>
+      </button>
+
+      <button class="concept-card" onclick="selectConcept('baby')" style="--c1:#ffd166; --c2:#ff8fab; --c3:#8ecae6;">
+        <div class="concept-swatch category-swatch">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 0 1 5 5c0 1.2-.4 2.3-1.1 3.2.7.3 1.4.7 2 1.2 1.4 1.2 2.1 2.9 2.1 4.6 0 3.4-3.6 6-8 6s-8-2.6-8-6c0-1.7.7-3.4 2.1-4.6.6-.5 1.3-.9 2-1.2A4.98 4.98 0 0 1 7 7a5 5 0 0 1 5-5Zm-2.5 8.5c-.6 0-1 .4-1 1s.4 1 1 1 1-.4 1-1-.4-1-1-1Zm5 0c-.6 0-1 .4-1 1s.4 1 1 1 1-.4 1-1-.4-1-1-1Z"/></svg>
+        </div>
+        <div class="concept-body">
+          <div class="concept-title">아기 사진</div>
+          <div class="concept-desc">스마트폰 액정에 볼살과 손바닥이 눌린 것처럼, 사랑스럽게 압축된 이미지를 만들어요.</div>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <!-- 0. 반려동물 스타일 선택 화면 -->
+  <section class="screen" id="screen-concept">
     <div class="hero">
       <span class="label" style="background:none;-webkit-text-fill-color:initial;color:var(--muted);">Choose Your Style</span>
       <h1 style="background:none;-webkit-text-fill-color:initial;color:var(--text);">어떤 스타일로<br>변신시켜볼까요?</h1>
@@ -439,6 +479,8 @@
         </div>
       </button>
     </div>
+
+    <button class="ghost-btn" style="max-width:200px; margin:24px auto 0; display:block;" onclick="showScreen('screen-category')">뒤로</button>
   </section>
 
   <!-- 1. 업로드 화면 -->
@@ -457,7 +499,7 @@
     </div>
 
     <div class="name-field">
-      <label for="petName">반려동물 이름</label>
+      <label for="petName" id="nameLabel">반려동물 이름</label>
       <input type="text" id="petName" placeholder="예: 초코">
     </div>
 
@@ -618,6 +660,9 @@
       downloadName: 'noble-portrait.png',
       pricePer: '초상화 1점당',
       priceLine1: '고해상도 초상화 이미지 1장',
+      nameLabel: '반려동물 이름',
+      namePlaceholder: '예: 초코',
+      ratio: '3 / 4',
       accent: ['#e3c07a', '#b8873a', '#d98e3f'],
     },
     y2k: {
@@ -636,7 +681,31 @@
       downloadName: 'pawdol-cover.png',
       pricePer: '앨범 커버 1점당',
       priceLine1: '고해상도 앨범 커버 이미지 1장',
+      nameLabel: '반려동물 이름',
+      namePlaceholder: '예: 초코',
+      ratio: '3 / 4',
       accent: ['#4ce0ff', '#ff5fc4', '#b78bff'],
+    },
+    baby: {
+      brand: '찌부베이비',
+      eyebrow: 'Screen Baby Filter',
+      heroTitle: '우리 아기,<br>폰 속에서 삐죽',
+      heroDesc: '아기 사진 한 장이면 충분해요. 스마트폰 액정에 볼살과 손바닥이 눌린 것처럼 사랑스럽게 압축해드려요.',
+      generateBtn: '이미지 만들기',
+      orderBtn: '이 이미지로 주문하기',
+      retryBtn: '다시 만들기',
+      processingTitle: '귀여움 압축 중',
+      loadingMessages: ['볼살 압축하는 중…', '손바닥 눌러붙이는 중…', '액정 유리 세팅하는 중…', '카메라 각도 맞추는 중…'],
+      taglines: ["TODAY'S MOOD: SQUISHED", 'PEEKING THROUGH THE SCREEN', 'CERTIFIED CHUBBY CHEEKS', 'SCREEN BABY DEBUT'],
+      orderDesc: '선택된 이미지',
+      imgAlt: '액정에 눌린 아기 이미지',
+      downloadName: 'squishy-baby.png',
+      pricePer: '이미지 1점당',
+      priceLine1: '고해상도 이미지 1장',
+      nameLabel: '아기 이름',
+      namePlaceholder: '예: 하늘',
+      ratio: '9 / 16',
+      accent: ['#ffd166', '#ff8fab', '#8ecae6'],
     }
   };
 
@@ -648,6 +717,7 @@
     document.documentElement.style.setProperty('--holo1', c.accent[0]);
     document.documentElement.style.setProperty('--holo2', c.accent[1]);
     document.documentElement.style.setProperty('--holo3', c.accent[2]);
+    document.documentElement.style.setProperty('--stage-ratio', c.ratio);
 
     document.getElementById('logoText').textContent = c.brand;
     document.getElementById('heroEyebrow').textContent = c.eyebrow;
@@ -656,6 +726,8 @@
     document.getElementById('generateBtn').textContent = c.generateBtn;
     document.getElementById('orderBtn').textContent = c.orderBtn;
     document.getElementById('retryBtn').textContent = c.retryBtn;
+    document.getElementById('nameLabel').textContent = c.nameLabel;
+    document.getElementById('petName').placeholder = c.namePlaceholder;
     document.getElementById('processingTitle').textContent = c.processingTitle;
     document.getElementById('resultImg').alt = c.imgAlt;
     document.getElementById('orderThumb').alt = c.imgAlt;
@@ -854,40 +926,47 @@
     return new Promise((resolve) => {
     const img = new Image();
     img.onload = () => {
-      const w = 768, h = 1024; // 3:4 세로
+      const isBaby = selectedConcept === 'baby';
+      const w = isBaby ? 768 : 768, h = isBaby ? 1365 : 1024; // baby: 9:16, 그 외: 3:4
       const canvas = document.createElement('canvas');
       canvas.width = w; canvas.height = h;
       const ctx = canvas.getContext('2d');
 
-      // 배경 (딥 인디고 + 홀로그래픽 라디얼 글로우)
-      ctx.fillStyle = '#0a0a1f';
+      // 배경: baby는 파스텔 글로우, 그 외는 홀로그래픽 마젠타/사이언 글로우
+      ctx.fillStyle = isBaby ? '#151a24' : '#0a0a1f';
       ctx.fillRect(0, 0, w, h);
+      const g1Color = isBaby ? 'rgba(255,209,102,0.28)' : 'rgba(255,95,196,0.35)';
+      const g2Color = isBaby ? 'rgba(142,202,230,0.28)' : 'rgba(76,224,255,0.3)';
       const glow1 = ctx.createRadialGradient(w*0.2, h*0.1, 0, w*0.2, h*0.1, w*0.7);
-      glow1.addColorStop(0, 'rgba(255,95,196,0.35)');
-      glow1.addColorStop(1, 'rgba(255,95,196,0)');
+      glow1.addColorStop(0, g1Color);
+      glow1.addColorStop(1, g1Color.replace(/[\d.]+\)$/, '0)'));
       ctx.fillStyle = glow1;
       ctx.fillRect(0, 0, w, h);
       const glow2 = ctx.createRadialGradient(w*0.85, h*0.9, 0, w*0.85, h*0.9, w*0.7);
-      glow2.addColorStop(0, 'rgba(76,224,255,0.3)');
-      glow2.addColorStop(1, 'rgba(76,224,255,0)');
+      glow2.addColorStop(0, g2Color);
+      glow2.addColorStop(1, g2Color.replace(/[\d.]+\)$/, '0)'));
       ctx.fillStyle = glow2;
       ctx.fillRect(0, 0, w, h);
 
-      // 사진을 화면 꽉 채워 배치 + 듀오톤 필터(마젠타/사이언 크롬 느낌)
+      // 사진을 화면 꽉 채워 배치 (baby는 부드러운 보정, 그 외는 듀오톤 크롬 느낌)
       ctx.save();
-      ctx.filter = 'contrast(1.25) saturate(1.5) hue-rotate(260deg) brightness(1.05)';
+      ctx.filter = isBaby
+        ? 'contrast(1.05) saturate(1.15) brightness(1.08)'
+        : 'contrast(1.25) saturate(1.5) hue-rotate(260deg) brightness(1.05)';
       const ratio = Math.max(w / img.width, h / img.height);
       const dw = img.width * ratio, dh = img.height * ratio;
       ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
       ctx.restore();
 
-      // 홀로그래픽 스캔라인
-      ctx.globalAlpha = 0.08;
-      for (let y = 0; y < h; y += 4) {
-        ctx.fillStyle = y % 8 === 0 ? '#4ce0ff' : '#ff5fc4';
-        ctx.fillRect(0, y, w, 1.4);
+      // 홀로그래픽 스캔라인 (baby는 생략)
+      if (!isBaby) {
+        ctx.globalAlpha = 0.08;
+        for (let y = 0; y < h; y += 4) {
+          ctx.fillStyle = y % 8 === 0 ? '#4ce0ff' : '#ff5fc4';
+          ctx.fillRect(0, y, w, 1.4);
+        }
+        ctx.globalAlpha = 1;
       }
-      ctx.globalAlpha = 1;
 
       // 가장자리 비네트
       const vg = ctx.createRadialGradient(w/2, h/2, h*0.3, w/2, h/2, h*0.75);
@@ -1004,7 +1083,7 @@
     document.getElementById('ordAddress').value = '';
     ['field-name','field-phone','field-address'].forEach(id => setFieldError(id, false));
     checkReady();
-    showScreen('screen-concept');
+    showScreen('screen-category');
   }
 
   loadFreeUsage();
