@@ -25,12 +25,50 @@ Composition & Strict Boundary Constraints:
 
 * Framing: The composition terminates precisely at the smartphone's outer bezel. The phone bezel tightly frames the entire canvas edge-to-edge.
 * Negative/Strict Constraints: Zero background, tables, hands holding the device, or surrounding room outside the smartphone bezel. No generated text, UI icons, watermarks, or screen notch overlays. Exactly 5 fingers per hand.`,
+
+  mugshot: `Core Objective: Transform the baby from the provided input image into a comical, adorable police mugshot portrait while retaining the baby's exact facial features, eye shape, and identity.
+Character & Pose:
+
+* Likeness: Maintain the identical facial structure, cute chubby cheeks, and unique features of the baby in the source photo.
+* Pose: Front-facing, centered chest-up bust shot looking straight at the camera with a hilariously serious, grumpy, or playfully mischievous baby expression.
+* Hands & Prop: The baby holds a classic black-and-white booking placard (mugshot letter board) with both chubby little hands. Ensure exactly five plump fingers on each hand without anatomical distortion.
+
+Setting & Background:
+
+* Background: A classic neutral gray police height chart backdrop with clear horizontal measurement lines (height marks in centimeters/inches) directly behind the baby.
+* Lighting & Aesthetic: Direct, slightly harsh flash police station photography lighting with sharp, clean shadows, blended with smooth, soft skin texture and clear catchlights in the round eyes.
+
+Constraints:
+
+* Keep text on the placard either subtle, blurred, or standard humorous placeholder numbers.
+* No extra people, no severe prison bars, no dark or scary themes.
+* Full focus on an endearing, high-resolution humorous baby mugshot`,
+
+  petmugshot: `Core Objective: Transform the pet from the provided input image into a hilarious, adorable police booking mugshot portrait while preserving the pet's exact breed, facial features, fur colors, markings, and distinct identity.
+Character & Pose:
+
+* Likeness: Accurately retain the facial structure, eye shape, ear shape, and unique coat patterns of the pet in the source image.
+* Pose: Centered, chest-up bust shot looking straight into the camera lens with a funny, guilty, grumpy, or completely unapologetic facial expression.
+* Prop: The pet is holding (or wearing around its neck with paws resting on) a classic black-and-white booking placard (mugshot letter board). Ensure front paws are anatomically correct and natural.
+
+Setting & Lighting:
+
+* Background: A classic neutral gray/off-white police lineup height measurement chart backdrop with clear horizontal grid lines and height markings directly behind the pet.
+* Lighting: Direct frontal flash photography characteristic of a police station booking photo, casting subtle, realistic shadows behind the pet while highlighting the rich texture and details of the fur.
+
+Constraints:
+
+* Keep placard text clean, simple, or minimal placeholder numbers.
+* No additional animals or humans, no prison cell bars, no dark or disturbing mood.
+* Maintain a bright, humorous, ultra-high-resolution pet portrait.`,
 };
 
 const ASPECT_RATIOS = {
   baroque: '3:4',
   y2k: '3:4',
   baby: '9:16',
+  mugshot: '3:4',
+  petmugshot: '3:4',
 };
 
 module.exports = async function handler(req, res) {
